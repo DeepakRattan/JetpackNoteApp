@@ -1,5 +1,6 @@
 package com.example.jetpacknoteapp.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -19,13 +20,18 @@ import androidx.compose.ui.unit.dp
 import com.example.jetpacknoteapp.R
 import com.example.jetpacknoteapp.components.NoteButton
 import com.example.jetpacknoteapp.components.NoteInputText
+import com.example.jetpacknoteapp.model.Note
 
 /**
  * Created by Deepak Rattan on 09/04/23
  */
 
 @Composable
-fun NoteScreen() {
+fun NoteScreen(
+    notes: List<Note>,
+    onAddNote: (Note) -> Unit,
+    onRemoveNote: (Note) -> Unit
+) {
     var title by remember {
         mutableStateOf("")
     }
@@ -78,7 +84,9 @@ fun NoteScreen() {
                 })
 
             NoteButton(text = "Save",
-                onClick = { })
+                onClick = {
+                    Log.d("save", "Title is $title")
+                })
         }
 
     }
@@ -88,5 +96,8 @@ fun NoteScreen() {
 @Preview(showBackground = true)
 @Composable
 fun NoteScreenPreview() {
-    NoteScreen()
+    NoteScreen(
+        notes = emptyList(),
+        onAddNote = {},
+        onRemoveNote = {})
 }
