@@ -1,17 +1,23 @@
 package com.example.jetpacknoteapp.screen
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -21,11 +27,13 @@ import com.example.jetpacknoteapp.R
 import com.example.jetpacknoteapp.components.NoteButton
 import com.example.jetpacknoteapp.components.NoteInputText
 import com.example.jetpacknoteapp.model.Note
+import java.time.format.DateTimeFormatter
 
 /**
  * Created by Deepak Rattan on 09/04/23
  */
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NoteScreen(
     notes: List<Note>,
@@ -54,9 +62,10 @@ fun NoteScreen(
         )
 
         // Content
-
         Column(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             NoteInputText(
@@ -87,12 +96,61 @@ fun NoteScreen(
                 onClick = {
                     Log.d("save", "Title is $title")
                 })
+
+            Divider(modifier = Modifier.padding(10.dp))
+
+            // List of Notes
+            LazyColumn {
+                items(notes) { note ->
+                    NoteRow(note = note, onNoteClicked = {})
+                }
+            }
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun NoteRow(
+    modifier: Modifier = Modifier,
+    note: Note,
+    onNoteClicked: (Note) -> Unit,
+) {
+
+    Surface(
+        modifier = modifier
+            .padding(8.dp)
+            .clip(
+                RoundedCornerShape(
+                    topEnd = 33.dp,
+                    bottomStart = 33.dp
+                )
+            )
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        color = Color(0xFFDEF6EB),
+        elevation = 6.dp
+    ) {
+        Column(
+            modifier
+                .clickable { }
+                .padding(
+                    horizontal = 14.dp,
+                    vertical = 10.dp
+                ),
+            horizontalAlignment = Alignment.Start) {
+            Text(text = note.title, style = MaterialTheme.typography.subtitle2, color = Color.Black)
+            Text(text = note.description, style = MaterialTheme.typography.subtitle1)
+            Text(
+                text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")),
+                style = MaterialTheme.typography.caption
+            )
         }
 
     }
-
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun NoteScreenPreview() {

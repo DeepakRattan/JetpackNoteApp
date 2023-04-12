@@ -44,7 +44,6 @@ fun NoteInputText(
         }),
         modifier = modifier
     )
-
 }
 
 @Composable
