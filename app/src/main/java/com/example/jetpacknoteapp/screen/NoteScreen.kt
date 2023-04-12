@@ -2,6 +2,7 @@ package com.example.jetpacknoteapp.screen
 
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +48,7 @@ fun NoteScreen(
     var description by remember {
         mutableStateOf("")
     }
+    val context = LocalContext.current
 
     Column(modifier = Modifier.padding(6.dp)) {
         TopAppBar(
@@ -95,6 +98,12 @@ fun NoteScreen(
             NoteButton(text = "Save",
                 onClick = {
                     Log.d("save", "Title is $title")
+                    if (title.isNotEmpty() && description.isNotEmpty()) {
+                        onAddNote(Note(title = title, description = description))
+                        title = ""
+                        description = ""
+                        Toast.makeText(context, "Noted Added", Toast.LENGTH_LONG).show()
+                    }
                 })
 
             Divider(modifier = Modifier.padding(10.dp))
@@ -102,7 +111,10 @@ fun NoteScreen(
             // List of Notes
             LazyColumn {
                 items(notes) { note ->
-                    NoteRow(note = note, onNoteClicked = {})
+                    NoteRow(note = note, onNoteClicked = {
+                        onRemoveNote(it)
+                        Toast.makeText(context, "Noted Removed", Toast.LENGTH_LONG).show()
+                    })
                 }
             }
         }
@@ -133,7 +145,9 @@ fun NoteRow(
     ) {
         Column(
             modifier
-                .clickable { }
+                .clickable {
+                    onNoteClicked(note)
+                }
                 .padding(
                     horizontal = 14.dp,
                     vertical = 10.dp
