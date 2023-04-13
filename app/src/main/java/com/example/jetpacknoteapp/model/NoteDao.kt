@@ -1,6 +1,7 @@
 package com.example.jetpacknoteapp.model
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Created by Deepak Rattan on 13/04/23
@@ -11,24 +12,22 @@ import androidx.room.*
 interface NoteDao {
     //Get all Notes
     @Query("select * from notes_tbl")
-    fun getNotes(): List<Note>
+    fun getNotes(): Flow<List<Note>>
 
     @Query("select * from notes_tbl where id=:id")
-    fun getNoteById(id: String): Note
+    suspend fun getNoteById(id: String): Note
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(note: Note)
+    suspend fun insert(note: Note)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(note: Note)
+    suspend fun update(note: Note)
 
     @Query("delete from notes_tbl")
-    fun deleteAll()
+    suspend fun deleteAll()
 
     @Delete
-    fun deleteNote(note: Note)
-
-
+    suspend fun deleteNote(note: Note)
 
 
 }
