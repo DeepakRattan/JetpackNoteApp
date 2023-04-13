@@ -155,10 +155,10 @@ fun NoteRow(
             horizontalAlignment = Alignment.Start) {
             Text(text = note.title, style = MaterialTheme.typography.subtitle2, color = Color.Black)
             Text(text = note.description, style = MaterialTheme.typography.subtitle1)
-            Text(
+           /* Text(
                 text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")),
                 style = MaterialTheme.typography.caption
-            )
+            )*/
         }
 
     }
