@@ -29,6 +29,7 @@ import com.example.jetpacknoteapp.R
 import com.example.jetpacknoteapp.components.NoteButton
 import com.example.jetpacknoteapp.components.NoteInputText
 import com.example.jetpacknoteapp.model.Note
+import com.example.jetpacknoteapp.util.formatDate
 import java.time.format.DateTimeFormatter
 
 /**
@@ -155,10 +156,10 @@ fun NoteRow(
             horizontalAlignment = Alignment.Start) {
             Text(text = note.title, style = MaterialTheme.typography.subtitle2, color = Color.Black)
             Text(text = note.description, style = MaterialTheme.typography.subtitle1)
-           /* Text(
-                text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")),
+            Text(
+                text = formatDate(note.entryDate.time),
                 style = MaterialTheme.typography.caption
-            )*/
+            )
         }
 
     }
